@@ -21,7 +21,7 @@ const showcases = [
     icon: <ListChecks size={14} />,
     label: "List & Map View",
     title: "Browse every inspection, by list or on a map",
-    description: "Sort by recent, score, or suburb — or pin every inspected property on Standard or Hybrid maps.",
+    description: "Sort by recent, score, or suburb or pin every inspected property on Standard or Hybrid maps.",
     image: "map-view.png",
     alt: "Property Checkr map view of inspected properties",
   },
@@ -39,14 +39,40 @@ export function HomePage() {
   return (
     <div>
       <section className="relative overflow-hidden px-4 pt-12 pb-14 sm:pt-16 sm:pb-20 bg-gradient-to-b from-accent/60 via-accent/20 to-background">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-[0.06] pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'><path d='M40 14c-8 0-14 6-14 14 0 10 14 24 14 24s14-14 14-24c0-8-6-14-14-14zm0 19a5 5 0 110-10 5 5 0 010 10z' fill='%23194a5c'/></svg>")`,
-            backgroundSize: "120px 120px",
-          }}
-        />
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/15 blur-3xl" />
+          <div className="absolute top-10 right-0 w-80 h-80 rounded-full bg-[#2196a6]/10 blur-3xl" />
+          <div className="absolute bottom-0 left-1/3 w-72 h-72 rounded-full bg-primary/10 blur-3xl" />
+        </div>
+        <div aria-hidden="true" className="pointer-events-none absolute bottom-0 left-0 right-0 opacity-[0.07]">
+          <svg viewBox="0 0 1440 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-28 sm:h-36">
+            <path d="M0,160 L0,110 L40,110 L40,70 L55,70 L55,50 L65,50 L65,70 L80,70 L80,110
+              L120,110 L120,80 L135,65 L150,80 L150,110
+              L190,110 L190,60 L200,60 L200,40 L210,40 L210,60 L220,60 L220,110
+              L260,110 L260,85 L275,85 L275,110
+              L310,110 L310,50 L320,40 L330,50 L330,110
+              L370,110 L370,75 L380,75 L380,55 L390,55 L390,75 L400,75 L400,110
+              L440,110 L440,90 L460,90 L460,110
+              L500,110 L500,45 L512,30 L524,45 L524,110
+              L560,110 L560,70 L575,70 L575,110
+              L610,110 L610,60 L620,50 L625,40 L630,50 L640,60 L640,110
+              L680,110 L680,80 L695,80 L695,110
+              L730,110 L730,55 L740,55 L740,35 L750,35 L750,55 L760,55 L760,110
+              L800,110 L800,85 L820,85 L820,110
+              L860,110 L860,65 L870,50 L880,65 L880,110
+              L920,110 L920,75 L935,75 L935,110
+              L970,110 L970,45 L980,45 L980,25 L990,25 L990,45 L1000,45 L1000,110
+              L1040,110 L1040,80 L1060,80 L1060,110
+              L1100,110 L1100,60 L1112,45 L1124,60 L1124,110
+              L1160,110 L1160,80 L1175,80 L1175,110
+              L1210,110 L1210,50 L1220,50 L1220,30 L1230,30 L1230,50 L1240,50 L1240,110
+              L1280,110 L1280,90 L1300,90 L1300,110
+              L1340,110 L1340,65 L1350,50 L1360,65 L1360,110
+              L1440,110 L1440,160 Z"
+              fill="#194a5c"
+            />
+          </svg>
+        </div>
         <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 items-center">
           <div className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 text-xs font-medium text-primary bg-white/80 backdrop-blur-sm border border-border px-3 py-1.5 rounded-full mb-5 shadow-sm">
@@ -58,13 +84,14 @@ export function HomePage() {
               <span className="text-primary">Decide with confidence.</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6 leading-relaxed">
-              Capture every detail at open homes — features, amenities, photos, and notes — then compare suburbs and shortlist your favourites in one place.
+              Capture every detail at open homes — features, amenities, photos, and notes, then compare suburbs and shortlist your favourites in one place.
             </p>
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-5">
               <a
-                href="#"
+                href="https://apps.apple.com/us/app/property-checkr/id6762545485"
                 aria-label="Download on the App Store"
                 className="hover:opacity-80 transition-opacity"
+                target="_blank"
               >
                 <img
                   src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
@@ -73,18 +100,30 @@ export function HomePage() {
                   className="h-11"
                 />
               </a>
-              <a
-                href="#"
-                aria-label="Get it on Google Play"
-                className="hover:opacity-80 transition-opacity"
-              >
+              <div style={{ position: "relative", opacity: 0.6, cursor: "not-allowed" }}>
                 <img
-                  src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                  alt="Get it on Google Play"
-                  height={44}
-                  className="h-[52px]"
+                  src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                  alt="Google Play Coming Soon"
+                  style={{ height: "60px" }}
                 />
-              </a>
+
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    background: "black",
+                    color: "white",
+                    padding: "4px 8px",
+                    fontSize: "12px",
+                    borderRadius: "6px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Coming Soon
+                </span>
+              </div>
             </div>
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -132,7 +171,7 @@ export function HomePage() {
               Everything you need at an open home
             </h2>
             <p className="text-muted-foreground leading-relaxed">
-              From the first inspection to the final shortlist — Property Checkr gives you the structure to decide with confidence.
+              From the first inspection to the final shortlist, <strong>Property Checkr</strong> gives you the structure to decide with confidence.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">

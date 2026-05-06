@@ -1,0 +1,110 @@
+name: Deploy Static Site
+
+# Runs only when a pull request is merged into main
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+permissions:
+  id-token: write   # Required for OIDC auth with AWS
+  contents: read
+
+env:
+  TF_VERSION: "1.7.5"
+  NODE_VERSION: "20"
+
+jobs:
+  deploy:
+    # GitHub sets merged=true only on a real merge, not on a closed-without-merge
+    if: github.event.pull_request.merged == true
+    name: Deploy (merged → main)
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Checkout ─────────────────────────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Checkout the merge commit on main, not the PR head
+          ref: main
+
+      # ── Node / Build ──────────────────────────────────────────────────────────
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      # ── AWS Auth (OIDC — no long-lived keys) ──────────────────────────────────
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # ── Terraform ─────────────────────────────────────────────────────────────
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform
+        run: |
+          terraform apply -auto-approve \
+            -var-file="${{ secrets.TF_VARS_FILE }}"
+
+      # ── Read Terraform outputs ────────────────────────────────────────────────
+      - name: Read Terraform outputs
+        id: tf_outputs
+        working-directory: terraform
+        run: |
+          echo "bucket=$(terraform output -raw s3_bucket_name)" >> "$GITHUB_OUTPUT"
+          echo "cf_id=$(terraform output -raw cloudfront_distribution_id)" >> "$GITHUB_OUTPUT"
+          echo "url=$(terraform output -raw website_url)" >> "$GITHUB_OUTPUT"
+
+      # ── Sync to S3 ────────────────────────────────────────────────────────────
+      - name: Sync hashed assets (long-lived cache)
+        run: |
+          aws s3 sync ${{ vars.BUILD_OUTPUT_DIR || 'dist' }}/assets \
+            s3://${{ steps.tf_outputs.outputs.bucket }}/assets \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+
+      - name: Sync remaining files (no cache)
+        run: |
+          aws s3 sync ${{ vars.BUILD_OUTPUT_DIR || 'dist' }} \
+            s3://${{ steps.tf_outputs.outputs.bucket }} \
+            --cache-control "no-cache, no-store, must-revalidate" \
+            --exclude "assets/*" \
+            --delete
+
+      # ── CloudFront Invalidation ───────────────────────────────────────────────
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.tf_outputs.outputs.cf_id }} \
+            --paths "/*"
+
+      # ── Summary ───────────────────────────────────────────────────────────────
+      - name: Deployment summary
+        run: |
+          echo "### Deployed to ${{ steps.tf_outputs.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- PR: #${{ github.event.pull_request.number }} — ${{ github.event.pull_request.title }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Merged by: @${{ github.event.pull_request.merged_by.login }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Bucket: \`${{ steps.tf_outputs.outputs.bucket }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- CF Distribution: \`${{ steps.tf_outputs.outputs.cf_id }}\`" >> "$GITHUB_STEP_SUMMARY"
