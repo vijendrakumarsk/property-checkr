@@ -288,28 +288,3 @@ terraform apply -var-file="dev.tfvars"
 
 # Then sync as above using the dev bucket name
 ```
-
-## Cost Estimate
-
-Typical monthly costs for a low-traffic site:
-
-| Service | Cost |
-|---------|------|
-| Route 53 Hosted Zone | $0.50/month |
-| Route 53 Queries | $0.40/million queries |
-| S3 Storage (1GB) | $0.023/month |
-| S3 Requests | $0.005/1000 PUT, $0.0004/1000 GET |
-| CloudFront (10GB transfer) | $1.00/month |
-| CloudFront Requests | $0.01/10,000 HTTPS requests |
-| ACM Certificate | Free |
-
-Total for a small site: ~$2-5/month
-
-## Next Steps
-
-- Set up remote Terraform state (S3 + DynamoDB) for team collaboration
-- Add CloudWatch alarms for 4xx/5xx errors
-- Configure CloudFront access logs
-- Add WAF rules for security
-- Set up multiple environments (dev, staging, prod)
-- Configure custom error pages (403.html, 404.html, 500.html)
