@@ -61,7 +61,7 @@ const faqs = [
   },
   {
     question: "How do I contact support if I have a problem?",
-    answer: "If you experience an issue or have a question not covered here, please email us at support@propertycheckr.app. Include your iOS version, app version (visible in the app's Settings screen), and a description of the problem. We typically respond within 1–2 business days.",
+    answer: "If you experience an issue or have a question not covered here, please email us at propertycheckr.support@gmail.com. Include your iOS version, app version (visible in the app's Settings screen), and a description of the problem. We typically respond within 1–2 business days.",
   },
 ];
 

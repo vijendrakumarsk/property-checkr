@@ -57,10 +57,10 @@ export const SupportPage = () => {
                   If you can't find an answer in the FAQ, or if you're experiencing a technical issue, please email us directly. We typically respond within 1–2 business days.
                 </p>
                 <a
-                  href="mailto:support@propertycheckr.app"
+                  href="mailto:propertycheckr.support@gmail.com"
                   className="text-sm text-primary font-medium hover:underline"
                 >
-                  support@propertycheckr.app
+                  propertycheckr.support@gmail.com
                 </a>
               </div>
             </div>
@@ -125,7 +125,7 @@ export const SupportPage = () => {
                 We read every message and do our best to respond promptly. When contacting us, it helps to include your iOS version, app version (found in Settings within the app), and a description of what happened.
               </p>
               <a
-                href="mailto:support@propertycheckr.app"
+                href="mailto:propertycheckr.support@gmail.com"
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 <Mail size={16} />
