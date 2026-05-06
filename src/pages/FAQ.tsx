@@ -90,7 +90,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   );
 }
 
-export function FAQPage() {
+export const FAQPage = () => {
   return (
     <div className="py-12 px-4">
       <div className="max-w-3xl mx-auto">

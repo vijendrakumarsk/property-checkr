@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 
-export function NotFoundPage() {
+export const NotFoundPage = () => {
   return (
     <div className="py-24 px-4 text-center">
       <div className="max-w-md mx-auto">
