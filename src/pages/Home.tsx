@@ -35,7 +35,7 @@ const showcases = [
   },
 ];
 
-export function HomePage() {
+export const HomePage = () => {
   return (
     <div>
       <section className="relative overflow-hidden px-4 pt-12 pb-14 sm:pt-16 sm:pb-20 bg-gradient-to-b from-accent/60 via-accent/20 to-background">

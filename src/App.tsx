@@ -9,7 +9,7 @@ import { NotFoundPage } from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
 
-function Router() {
+const Router = () => {
   return (
     <Layout>
       <Switch>
@@ -23,7 +23,7 @@ function Router() {
   );
 }
 
-function App() {
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>

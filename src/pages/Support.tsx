@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Mail, HelpCircle, Shield, MessageSquare } from "lucide-react";
 
-export function SupportPage() {
+export const SupportPage = () => {
   return (
     <div className="py-12 px-4">
       <div className="max-w-3xl mx-auto">

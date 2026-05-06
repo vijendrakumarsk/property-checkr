@@ -3,7 +3,7 @@ import { Link } from "wouter";
 const LAST_UPDATED = "April 20, 2026";
 const CONTACT_EMAIL = "support@propertycheckr.app";
 
-function Section({ number, title, children }: { number: string; title: string; children: React.ReactNode }) {
+const Section = ({ number, title, children }: { number: string; title: string; children: React.ReactNode }) => {
   return (
     <section className="mb-8">
       <h2 className="text-lg font-semibold text-foreground mb-3">{number}. {title}</h2>
@@ -14,7 +14,7 @@ function Section({ number, title, children }: { number: string; title: string; c
   );
 }
 
-export function PrivacyPage() {
+export const PrivacyPage = () => {
   return (
     <div className="py-12 px-4">
       <div className="max-w-3xl mx-auto">
